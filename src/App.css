@@ -1,0 +1,206 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans:wght@300;400;500;600;800&display=swap');
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
+.container {
+    max-width: 350px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+   
+}
+/* Style the logo and foreal text */
+.logo-container {
+    text-align: center;
+    margin-top: 5px;
+  
+}
+
+.logo {
+    max-width: 150px; 
+    color: #164c63;
+}
+
+.formal-property1 {
+    font-family: 'Noto Sans', sans-serif;
+    margin-top: -8px;
+    color: #164c63;
+}
+.formal-property2 {
+    margin-top: -24px;
+    color: #164c63;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 500;
+}
+h2 {
+    text-align: center;
+}
+.create_ac{
+    margin-top: -10px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+form {
+    margin: 20px 0;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: small;
+    font-weight: 600;
+    color: rgb(59, 56, 56);
+}
+.gender_select{
+    display: flex;
+    width:100%;
+}
+.gender_label{
+    color:gray;
+    display: flex;
+    width:50%;
+}
+.male_in{
+    height: 15px;
+}
+.female_in{
+    height: 15px;
+}
+input[type="text"],
+input[type="email"],
+input[type="password"],
+select{
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    
+}
+input[type="date"],select{
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    color: gray;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+#education {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    color: #333;
+    font-weight: 600;
+    font-size: 15px;
+}
+#education option {
+    background-color: #fff;
+    color: #333;
+    padding: 10px;
+}
+#education:focus {
+    outline: none; 
+    box-shadow: 0 0 5px #4CAF50;
+}
+.terms{
+    display: flex;
+}
+input[type="submit"] {
+    width: 100%;
+    background-color:#164c63;
+    color: white;
+    padding: 15px;
+    border: none;
+    cursor: pointer;
+    border-radius: 10px;
+    font-family: 'Noto Sans', sans-serif;
+    font-weight: 600;
+    font-size: 15px;    
+}
+.already_ac{
+  display: flex;
+}
+.ac_question{
+  color: #333;
+  font-size: 14px;
+  font-family: 'Noto Sans', sans-serif;
+  font-weight: 400;
+}
+.login{
+  font-family: 'Noto Sans', sans-serif;
+}
+.success-box {
+  background-color: #4CAF50; 
+  color: white; 
+  border: 1px solid #4CAF50; 
+  padding: 10px; 
+  margin-bottom: 10px;
+  text-align: center; 
+  border-radius: 5px; 
+}
+
+.success-box::before {
+  content: '\2713';
+  font-size: 20px;
+  margin-right: 10px;
+}
+
+.success-box p {
+  display: inline; 
+}
+
+
+.success-box a {
+  color: #fff; 
+  text-decoration: underline; 
+}
+.image{
+  height: 120px;
+  width: 120px;
+  margin-left: 100px;
+  border-radius: 100px;
+}
+
+
+/* Apply styles for responsive design */
+@media screen and (max-width: 600px) {
+    .container {
+        max-width: 100%;
+        margin: 0;
+        padding: 10px;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="date"],
+    select {
+        width: 90%;
+    }
+
+    .ed{
+      color: #333;
+      width: 95%;
+    }
+
+    input[type="submit"] {
+      width: 95%;
+      background-color:#164c63;
+      color: white;
+      padding: 15px;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      
+  }
+}
