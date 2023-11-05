@@ -36,7 +36,7 @@ function App() {
     if (name === 'password' || name === 'confirm_password') {
       // Check if Password and Confirm Password match
       if (name === 'confirm_password' && formData.password !== value) {
-        e.target.setCustomValidity('Please enter a valid password');
+        e.target.setCustomValidity('Password and Confirm Password should be same');
       } else {
         e.target.setCustomValidity('');
       }
