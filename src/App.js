@@ -7,7 +7,7 @@ const validationSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email format').required('Email is required'),
   password: Yup.string().required('Password is required'),
   confirm_password: Yup.string()
-    .oneOf([Yup.ref('password'), null], 'PasswordPassword and Confirm password should be same')
+    .oneOf([Yup.ref('password'), null], 'Password and Confirm password should be same')
     .required('Confirm Password is required'),
   gender: Yup.string().required('Select Gender is required'),
   birthdate: Yup.date().required('Select Birthday Date is required'),
