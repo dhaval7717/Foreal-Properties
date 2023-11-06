@@ -1,59 +1,22 @@
+import React ,{ useState, useEffect } from 'react';
+import { Formik, Field, Form, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 import './App.css';
-import React, { useState, useEffect } from 'react';
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required('Name is required'),
+  email: Yup.string().email('Invalid email format').required('Email is required'),
+  password: Yup.string().required('Password is required'),
+  confirm_password: Yup.string()
+    .oneOf([Yup.ref('password'), null], 'PasswordPassword and Confirm password should be same')
+    .required('Confirm Password is required'),
+  gender: Yup.string().required('Select Gender is required'),
+  birthdate: Yup.date().required('Select Birthday Date is required'),
+  education: Yup.string().required('Select Education is required'),
+  terms: Yup.boolean().oneOf([true], 'You must agree to the terms and conditions'),
+});
 
-function App() {
-
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirm_password: '',
-    gender: 'male',
-    birthdate: '',
-    education: '',
-  });
-
-  const [formErrors, setFormErrors] = useState({});
+const App = () => {
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-  const [genderError, setGenderError] = useState(false);
-
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-    
-    if (name === 'email') {
-      // Check for a valid email format
-      if (value.trim() === '') {
-        e.target.setCustomValidity('Invalid email format');
-      }
-      else if (!value.match(/^\S+@\S+\.\S+$/)) {
-        e.target.setCustomValidity('Invalid Email Format');
-      } else {
-        e.target.setCustomValidity('');
-      }
-    }
-    
-    if (name === 'password' || name === 'confirm_password') {
-      // Check if Password and Confirm Password match
-      if (name === 'confirm_password' && formData.password !== value) {
-        e.target.setCustomValidity('Password and Confirm Password should be same');
-      } else {
-        e.target.setCustomValidity('');
-      }
-    }
-
-    if (name === 'gender') {
-      // Check if gender is not selected
-      if (value !== 'Male' && value !== 'Female'){
-        e.target.setCustomValidity('Please select Male or Female');
-      }  
-      else{
-        e.target.setCustomValidity('');
-      }
-    }
-      
-    };
-
   useEffect(() => {
     if (isFormSubmitted) {
       const timer = setTimeout(() => {
@@ -62,200 +25,122 @@ function App() {
       return () => clearTimeout(timer); // Clear the timer when the component unmounts
     }
   }, [isFormSubmitted]);
-
   
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const errors = validateForm();
-
-    if (Object.keys(errors).length === 0 && formData.gender) {
-      // Form submission logic here
-      setIsFormSubmitted(true);
-      console.log('Form submitted with data:', formData);
-    } else {
-      // Show errors in the fields
-      setFormErrors(errors);
-  
-      if (!formData.gender) {
-        setGenderError(true);
-      } else {
-        setGenderError(false);
-      }
-    }
-
-
-    if (Object.keys(errors).length === 0) {
-      // Form submission logic here
-      setIsFormSubmitted(true);
-      console.log('Form submitted with data:', formData);
-    } else {
-      // Show errors in the fields
-      setFormErrors(errors);
-    }
-  };
-
-  const validateForm = () => {
-    const errors = {};
-
-    if (formData.name.trim() === '') {
-      errors.name = 'Name is required';
-    }
-    if (!formData.email.match(/^\S+@\S+\.\S+$/)) {
-      errors.email = 'Invalid Email Format';
-    } else if (!formData.email) {
-      errors.email = 'Email is required';
-    }
-   
-    if (formData.password !== formData.confirm_password) {
-      errors.confirm_password = 'Password and Confirm Password should be same ';
-    }
-
-    return errors;
-  };
-
   return (
-    <> 
-<div class="container">
-  {/*Logo and Heading */}
-    <div class="logo-container">
+
+
+    <div className="container">
+      <div class="logo-container">
           <img src="./logo2.png" alt="Logo" class="logo"/>
           <h2 class="formal-property1">F O R E A L</h2>
           <h2 class="formal-property2"> PROPERTY</h2>
     </div>
   {/***************** */}
   <h3 class="create_ac"><span>&nbsp;&nbsp;&nbsp;&nbsp;</span> Create an account</h3> 
-    
-  <form onSubmit={handleSubmit} method="POST">
-    {/*Name */}
-  <label htmlFor="name">Name*</label>
-  <input type="text"
-     id="name"
-     name="name"
-     required placeholder="Enter your name"
-     onChange={handleInputChange}
-     value={formData.name}/> 
-     <br/><br/>
 
-  <label htmlFor="email">Email*</label>
-     <input type="email"
-      id="email" name="email"
-      required placeholder="Enter your Email"
-      onChange={handleInputChange}
-      value={formData.email}
-       />
-    {formErrors.email && <p className="error">{formErrors.email}</p>}
-             <br/><br/>
+      <Formik
+        initialValues={{
+          name: '',
+          email: '',
+          password: '',
+          confirm_password: '',
+          gender: '',
+          birthdate: '',
+          education: '',
+          terms: false,
+        }}
+        validationSchema={validationSchema}
+        onSubmit={(values, actions) => {
+          console.log('Form submitted with data:', values);
+          setIsFormSubmitted(true);
+          actions.setSubmitting(false);
+        }}
+      >
+        <Form>
+          <div className="input-field">
+            <label htmlFor="name">Name*</label>
+            <Field type="text" id="name" name="name" placeholder="Enter your name" />
+            <ErrorMessage name="name" component="div" className="error" />
+          </div><br/>
 
-          
-          {/*password */}
-          <label htmlFor="password">Password*</label>
-          <input type="password"
-          id="password"
-          name="password"
-          required 
-          placeholder="Create a Password"
-          onChange={handleInputChange}
-          value={formData.password}/>
-         
-          <br/><br/>
+          <div className="input-field">
+            <label htmlFor="email">Email*</label>
+            <Field type="email" id="email" name="email" placeholder="Enter your Email" />
+            <ErrorMessage name="email" component="div" className="error" />
+          </div><br/>
 
-            {/*confirm password */}
+          <div className="input-field">
+            <label htmlFor="password">Password*</label>
+            <Field type="password" id="password" name="password" placeholder="Create a Password" />
+            <ErrorMessage name="password" component="div" className="error" />
+          </div><br/>
+
+          <div className="input-field">
             <label htmlFor="confirm_password">Confirm Password*</label>
-            <input  type="password"
-            id="confirm_password"
-            name="confirm_password"
-            required
-            placeholder="Confirm Password"
-            onChange={handleInputChange}
-            value={formData.confirm_password}/>
-             
+            <Field type="password" id="confirm_password" name="confirm_password" placeholder="Confirm Password" />
+            <ErrorMessage name="confirm_password" component="div" className="error" />
+          </div><br/>
+
+          <div className="gender_select">
+            <label>Select Gender*</label>
+            <div class="m-f">
+            <div class="m">
+              <Field type="radio" id="male" name="gender" value="Male" />
+              <label htmlFor="male">Male</label>
+            </div>
+            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+            <div class="f">
+              <Field type="radio" id="female" name="gender" value="Female" />
+              <label htmlFor="female">Female</label>
+            </div>
+            </div>
+          </div>
+          <ErrorMessage name="gender" component="div" className="error" /><br/>
+          <div className="input-field">
+            <label htmlFor="birthdate">Select Birthday Date*</label>
+            <Field type="date" id="birthdate" name="birthdate" />
+            <ErrorMessage name="birthdate" component="div" className="error" />
+          </div>&nbsp;
+
+          <div className="ed">
+            <label htmlFor="education">Select Education*</label>
+            <Field as="select" id="education" name="education">
+              <option value="" disabled>Select Education Qualification</option>
+              <option value="diploma">DIPLOMA</option>
+              <option value="btech">B.Tech/B.E</option>
+              <option value="mtech">M.Tech/M.E</option>
+              <option value="bba">B.B.A</option>
+              <option value="mba">M.B.A</option>
+              <option value="bcom">B.COM</option>
+              <option value="mcom">M.COM</option>
+              <option value="other">OTHER</option>
+            </Field>
+            <ErrorMessage name="education" component="div" className="error" />
+          </div>&nbsp;
+
+          <div className="terms">
+            <Field type="checkbox" id="terms" name="terms" />
+            <label htmlFor="terms">I agree to the terms and conditions*</label>
             
-            <br/><br/>
-            {/*Gender Section */}
-           
-            <label htmlFor="gender">Select Gender</label>
-            <div class="gender_select">
-              {/*Male */}
-            <input class="male_in"
-              type="radio"
-              id="male"
-              name="gender"
-              value="Male"
-              checked={formData.gender === 'Male'}
-              onChange={handleInputChange}
-              required/>
-            <label htmlFor="male"><span class="gender_label">Male</span></label>
-
-            <span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
-            {/*Female */}
-            <input class="female_in"
-            type="radio"
-            id="female"
-            name="gender"
-            value="Female"
-            checked={formData.gender === 'Female'}
-            onChange={handleInputChange}
-            required/>
-            <label htmlFor="female"><span class="gender_label">Female</span></label>
-            </div>
-            {formErrors.gender && <p className="error">{formErrors.gender}</p>}
-          {/*Birth date */}
-          <br/>
-            <label htmlFor="birthdate">Select Birthday Date</label>
-            <input  type="date"
-            id="birthdate"
-            name="birthdate"
-            onChange={handleInputChange}
-            value={formData.birthdate} required/><br/><br/>
-
-          {/*Education */}
-          <div class="ed">
-          <label htmlFor="education">Select Education:</label>
-            <select id="education"
-            name="education"
-            onChange={handleInputChange}
-            value={formData.education} required >
-                <option value="" disabled selected>Select Education Qualification 
-                </option>
-                <option value="diploma">DIPLOMA</option>
-                <option value="btech">B.Tech/B.E</option>
-                <option value="diploma">M.Tech/M.E</option>
-                <option value="diploma">B.B.A</option>
-                <option value="diploma">M.B.A</option>
-                <option value="diploma">B.COM</option>
-                <option value="diploma">M.COM</option>
-                <option value="diploma">OTHER</option>
-            </select>
           </div>
-          <br/>
+          <ErrorMessage name="terms" component="div" className="error" />&nbsp;
+          <input type="submit" className="submit-button" value="Sign up"/>
+          
 
-          {/*Terms & Condition */}
-          <div class="terms">
-                <input type="checkbox" id="terms" name="terms" required/>
-                <label for="terms">I agree to the terms and conditions:</label>
-            </div>
-            <br/>
-          {/*Signup Button */}
-          <input type="submit" class="submit-button" value="Sign Up" />
-          {/*Already  */}
-          <div class="already_ac">
-          <p class="ac_question">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-           Already have an account? <a class="login" href='#login'>login</a></p>
+          <div className="already_ac">
+            <p className="ac_question">Already have an account? <a className="login" href="#login">login</a></p>
           </div>
-         
-  </form>
-  {genderError && <p className="error">Please select your gender*</p>}
-  {isFormSubmitted && (
+        </Form>
+        
+      </Formik>
+      {isFormSubmitted && (
       <>
        <p className="success-box">Thank you for signing up!</p>
        <img class="image" src="./timer-time.gif" />
       </>      )}
 
-    
- 
-</div>
-    </>
+    </div>
   );
-}
+};
 
 export default App;

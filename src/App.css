@@ -9,6 +9,13 @@
     border-radius: 5px;
    
 }
+.error{
+    color: red;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 14px;
+    margin-top: 5px;
+  }
+  
 /* Style the logo and foreal text */
 .logo-container {
     text-align: center;
@@ -55,8 +62,19 @@ label {
     color: rgb(59, 56, 56);
 }
 .gender_select{
-    display: flex;
+    
     width:100%;
+}
+.m-f{
+   display: flex;
+}
+.m{
+    
+    display: flex;
+}
+.f{
+    
+    display: flex;
 }
 .gender_label{
     color:gray;
